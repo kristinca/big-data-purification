@@ -6,7 +6,8 @@ import tkinter as tk
 def main():
 
     con = sqlite3.connect("semos_company_names.db")
-
+    cursor = con.cursor()
+    
     df = pd.read_sql('''SELECT * FROM companies''', con, chunksize=100)
 
     for chunk in df:
