@@ -79,6 +79,7 @@ class FrameOne(tk.Frame):
 
 
 if __name__ == '__main__':
+    # main() 
     # for row in main():
     #     print(row)
     app = MyApp()
