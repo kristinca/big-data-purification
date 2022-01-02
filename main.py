@@ -1,13 +1,12 @@
 import sqlite3
 import pandas as pd
 import tkinter as tk
-from agif import ImageLabel
 import re
 
 
 def main():
 
-    con = sqlite3.connect("sn2.db")
+    con = sqlite3.connect("sn.db")
     cursor = con.cursor()
 
     df = pd.read_sql('''SELECT * FROM companies''', con, chunksize=1000)
@@ -72,10 +71,6 @@ class FrameOne(tk.Frame):
         drop = tk.OptionMenu(self, clicked, *self.sqlite_db())
         drop.grid(row=4, column=0)
         drop.config(width=40, bg='#03C04A', font=18)
-
-        lbl = ImageLabel(self, bg='#086522')
-        lbl.grid(row=1)
-        lbl.load('mtt.gif')
 
     def sqlite_db(self):
         con = sqlite3.connect("sn2.db")
