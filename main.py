@@ -2,38 +2,128 @@ import sqlite3
 import pandas as pd
 import tkinter as tk
 import re
+import time
+from multiprocessing import Process
 
 
-# def main():
-#     con = sqlite3.connect("semos_company_names.db")
-#     cursor = con.cursor()
-#
-#     df = pd.read_sql('''SELECT * FROM companies''', con, chunksize=1000)
-#
-#     for chunk in df:
-#         for row in chunk.values:
-            # 1. clean company names:
-            #
-            # 1.1. remove "", limited, ltd, etc.
-            # command = ''' UPDATE companies SET company_name_cleaned = ? WHERE name = ? '''
-            # cursor.execute(command, [str(row[1]).title().replace('Limited', '').
-            #                replace('Ltd.', '').replace('Ltd', '').replace('"', ''), str(row[1])])
-            # con.commit()
-            #
-            # 1.2. remove brackets & text in between
-            # command = ''' UPDATE companies SET company_name_cleaned = ? WHERE company_name_cleaned = ? '''
-            # cursor.execute(command, [re.sub("[\(\[].*?[\)\]]", "", str(row[2])), str(row[2])])
-            # con.commit()
-            #
-            # 1.3. normalize company name
-            # command2 = '''UPDATE companies SET company_name_cleaned = ? WHERE company_name_cleaned = ?'''
-            # cursor.execute(command2, [re.sub(' +', ' ', str(row[2])), str(row[2])])
-            # con.commit()
-            #
-            # 2. yield rows
-            # yield row
+# 1. clean company names
+class CleanCompanyNames:
+    def __init__(self, *args, **kwargs):
+        pass
 
-    # con.close()
+    @staticmethod
+    def remove_parentheses_limited_ltd_etc():
+        con = sqlite3.connect("semos_company_names.db")
+        cursor = con.cursor()
+
+        df = pd.read_sql('''SELECT * FROM companies''', con, chunksize=1000)
+
+        for chunk in df:
+            for row in chunk.values:
+                command = ''' UPDATE companies SET company_name_cleaned = ? WHERE name = ? '''
+                cursor.execute(command, [str(row[1]).title().replace('Limited', '').replace('Llp', '').
+                               replace('Liability', '').replace('Ltd.', '').replace('Ltd', '').
+                               replace('Partnership', '').replace('"', ''), str(row[1])])
+                con.commit()
+        con.close()
+
+    @staticmethod
+    def remove_brackets_and_text_in_between():
+        con1 = sqlite3.connect("semos_company_names.db")
+        cursor1 = con1.cursor()
+
+        df = pd.read_sql('''SELECT * FROM companies''', con1, chunksize=1000)
+
+        for chunk in df:
+            for row in chunk.values:
+                command1 = ''' UPDATE companies SET company_name_cleaned = ? WHERE company_name_cleaned = ? '''
+                cursor1.execute(command1, [re.sub("[\(\[].*?[\)\]]", "", str(row[2])), str(row[2])])
+                con1.commit()
+        con1.close()
+
+    @staticmethod
+    def normalize_company_names():
+        con2 = sqlite3.connect("semos_company_names.db")
+        cursor2 = con2.cursor()
+
+        df = pd.read_sql('''SELECT * FROM companies''', con2, chunksize=1000)
+
+        for chunk in df:
+            for row in chunk.values:
+                command2 = '''UPDATE companies SET company_name_cleaned = ? WHERE company_name_cleaned = ?'''
+                cursor2.execute(command2, [re.sub(' +', ' ', str(row[2])), str(row[2])])
+                con2.commit()
+        con2.close()
+
+    def no_multiprocessing(self):
+        start = time.perf_counter()
+
+        start1 = time.perf_counter()
+        self.remove_parentheses_limited_ltd_etc()
+        finish1 = time.perf_counter()
+        print(f'Finished in {round(finish1 - start1, 2)} seconds')
+
+        start2 = time.perf_counter()
+        self.remove_brackets_and_text_in_between()
+        finish2 = time.perf_counter()
+        print(f'Finished in {round(finish2 - start2, 2)} seconds')
+
+        start3 = time.perf_counter()
+        self.normalize_company_names()
+        finish3 = time.perf_counter()
+        print(f'Finished in {round(finish3 - start3, 2)} seconds')
+
+        finish = time.perf_counter()
+        print(f'Finished in {round(finish - start, 2)} seconds')
+
+    def with_multiprocessing(self):
+
+        start = time.perf_counter()
+
+        start1 = time.perf_counter()
+        p1 = Process(target=self.remove_parentheses_limited_ltd_etc)
+        p1.start()
+        print('first process started')
+        p1.join()
+        finish1 = time.perf_counter()
+        print(f'Finished in {round(finish1 - start1, 2)} seconds')
+
+        start2 = time.perf_counter()
+        p2 = Process(target=self.remove_brackets_and_text_in_between)
+        p2.start()
+        print('second process started')
+        p2.join()
+        finish2 = time.perf_counter()
+        print(f'Finished in {round(finish2 - start2, 2)} seconds')
+
+        start3 = time.perf_counter()
+        p3 = Process(target=self.normalize_company_names)
+        p3.start()
+        print('third process started')
+        p3.join()
+        finish3 = time.perf_counter()
+        print(f'Finished in {round(finish3 - start3, 2)} seconds')
+
+        finish = time.perf_counter()
+        print(f'Finished in {round(finish - start, 2)} seconds')
+
+
+# 2. yield rows
+class YieldRows:
+    def __init__(self, *args, **kwargs):
+        pass
+
+    @staticmethod
+    def yield_row():
+        con = sqlite3.connect("semos_company_names.db")
+
+        df = pd.read_sql('''SELECT * FROM companies''', con, chunksize=1000)
+
+        for chunk in df:
+            for row1 in chunk.values:
+                yield row1
+
+        con.close()
 
 
 # 3. gui
@@ -83,9 +173,9 @@ class FrameOne(tk.Frame):
         drop.grid(row=4, column=0)
         drop.config(width=40, bg='#03C04A', font=18)
 
-    def sqlite_db(self):
+    @staticmethod
+    def sqlite_db():
         con = sqlite3.connect("semos_company_names.db")
-        cursor = con.cursor()
         df = pd.read_sql('''SELECT * FROM companies ORDER BY company_name_cleaned ASC ''', con, chunksize=1000)
         for chunk in df:
             for row in chunk.values:
@@ -94,13 +184,21 @@ class FrameOne(tk.Frame):
 
 
 if __name__ == '__main__':
-    # 1. clean company names
-    # main()
 
-    # 2. print rows from table companies
-    # for row in main():
+    # 1. clean company names
+    ccn = CleanCompanyNames()
+
+    # # without multiprocessing.Process
+    # ccn.no_multiprocessing()
+    #
+    # with multiprocessing.Process
+    ccn.with_multiprocessing()
+
+    # # 2. print rows from table companies
+    # yr = YieldRows()
+    # for row in yr.yield_row():
     #     print(row)
 
-    # 3. gui
-    app = MyApp()
-    app.mainloop()
+    # # 3. gui
+    # app = MyApp()
+    # app.mainloop()
