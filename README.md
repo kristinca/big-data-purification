@@ -1,3 +1,3 @@
 # big_data_purification
 
-![Image](https://github.com/kristinca/big_data_purification/blob/main/company_names.png)
+![Image](https://github.com/kristinca/big_data_purification/blob/main/gui.png)
