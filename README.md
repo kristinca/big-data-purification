@@ -67,6 +67,7 @@ The semos_company_names.db has one table: 3 columns
    app = MyApp()
    app.mainloop()
    ```
+   ![Image](./gui.png)
 
 ## Use your own database
 1. Change the database name, table name and column names
