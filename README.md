@@ -18,7 +18,7 @@ Author
 * Requirements
 * Data 
 * How to use this code 
-* Use your own data 
+* Use your own database
 
 ## Requirements
 For this script you need the following libraries and modules:
