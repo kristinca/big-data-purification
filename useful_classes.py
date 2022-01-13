@@ -253,9 +253,9 @@ class Main:
     #     ccn.with_multiprocessing()
 
     # 2. print rows from table companies
-    #     yr = YieldRows()
-    #     for row in yr.yield_row():
-    #         print(row)
+        yr = YieldRows()
+        for row in yr.yield_row():
+            print(row)
 
     # 3. gui
     #     app = MyApp()

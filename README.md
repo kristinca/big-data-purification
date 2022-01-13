@@ -2,11 +2,14 @@
 
 *A python script for big data purification of a sqlite3 database.*
 
-This repository contains code that cleans big data (company names) from the
-semos_company_names.db database.
+This repository contains code that cleans big data -
+company names from the sqlite3 database
+semos_company_names.db. It also contains code to print
+the rows in the sqlite3 database, as well as a tkinter gui
+to show the cleaned company names in ascending order.
 
 ## Description
-* The script main.py presents the big data purification in two ways - with and without
+* The class CleanCompanyNames from the script `useful_classes.py` presents the big data purification in two ways - with and without
 the multiprocessing library. It also shows the time needed to complete each step of 
 the purification, as well as the total time.
 
@@ -16,7 +19,7 @@ Author
 
 ## Table of Contents 
 * Requirements
-* Data 
+* Database 
 * How to use this code 
 * Use your own database
 
@@ -31,8 +34,9 @@ For this script you need the following libraries and modules:
 6. time ([documentation](https://docs.python.org/3/library/time.html))
 
 ## Database
-The semos_company_names.db has one table: 3 columns
-(id, name, company_name_cleaned), 20 000 rows.
+The sqlite3 database semos_company_names.db
+has one table - companies, 3 columns
+(id, name, company_name_cleaned) and 20 000 rows.
 
 ## How to use this code 
 1. To purify the big data \
