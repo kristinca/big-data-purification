@@ -40,7 +40,8 @@ class CleanCompanyNames:
     @staticmethod
     def remove_brackets_and_text_in_between():
         """
-        This function removes brackets and text between brackets.
+        This function removes brackets and text between brackets
+        from each row in the column name.
         """
 
         con1 = sqlite3.connect("semos_company_names.db")
@@ -58,7 +59,9 @@ class CleanCompanyNames:
     @staticmethod
     def normalize_company_names():
         """
-        This function replaces multiple spaces with a single space.
+        This function replaces multiple spaces
+        from each row in the column name
+        with a single space.
         """
 
         con2 = sqlite3.connect("semos_company_names.db")
