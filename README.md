@@ -37,13 +37,13 @@ The semos_company_names.db has one table: 3 columns
 ## How to use this code 
 1. To purify the big data \
    \
-     1.1. without the multiprocessing library - in `main.py` 
+     1.1. without the multiprocessing library - in `useful_classes.py` 
      uncomment only the following lines
      ```
      ccn = CleanCompanyNames()
      ccn.no_multiprocessing()
      ```
-    1.2. with the multiprocessing library - in `main.py`
+    1.2. with the multiprocessing library - in `useful_classes.py`
      uncomment only the following lines
      ```
      ccn = CleanCompanyNames()
@@ -53,7 +53,7 @@ The semos_company_names.db has one table: 3 columns
    
 2. To print the rows from the table companies\
    \
-   In `main.py` uncomment only the following lines 
+   In `useful_classes.py` uncomment only the following lines 
    ```
    yr = YieldRows()
    for row in yr.yield_row():
@@ -62,7 +62,7 @@ The semos_company_names.db has one table: 3 columns
    
 3. To see company cleaned names in ascending order, in tkinter gui\
    \
-  In `main.py` uncomment only the following lines 
+  In `useful_classes.py` uncomment only the following lines 
    ```
    app = MyApp()
    app.mainloop()
@@ -72,7 +72,7 @@ The semos_company_names.db has one table: 3 columns
 ## Use your own database
 1. Change the database name, table name and column names
 to your own sqlite3 database name, table name and column names.
-2. Use the replace() method for any additional occurrences
-of substrings that need to be replaced.
-3. In the method pd.read_sql() change the chunksize 
+2. In the method pd.read_sql() change the chunksize 
 appropriate to the number of rows in your table. 
+3. Use the replace() method for any additional occurrences
+of substrings that need to be replaced.
