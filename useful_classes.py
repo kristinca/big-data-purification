@@ -16,7 +16,7 @@ class CleanCompanyNames:
     @staticmethod
     def remove_parentheses_limited_ltd_etc():
         """
-        Replace any substring in column name.
+        Replace any substring in the column name.
 
         This function removes parentheses
         as well as the following substrings:
@@ -253,10 +253,10 @@ class Main:
     #     ccn.with_multiprocessing()
 
     # 2. print rows from table companies
-        yr = YieldRows()
-        for row in yr.yield_row():
-            print(row)
+    #     yr = YieldRows()
+    #     for row in yr.yield_row():
+    #         print(row)
 
     # 3. gui
-    #     app = MyApp()
-    #     app.mainloop()
+        app = MyApp()
+        app.mainloop()
