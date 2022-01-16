@@ -1,4 +1,4 @@
-from useful_classes import CleanCompanyNames, YieldRows, MyApp, Main
+from useful_classes import CleanCompanyNames, PrintRows, MyApp, Main
 
 
 if __name__ == '__main__':

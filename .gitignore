@@ -16,6 +16,7 @@ semos_company_names.db
 
 # Static folder at project root
 /static/
+the_data.csv
 
 # macOS
 ._*
