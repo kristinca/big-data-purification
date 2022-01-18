@@ -1,5 +1,5 @@
-from useful_classes import CleanCompanyNames, PrintRows, MyApp, Main
+from sqlite3_with_pandas import main
 
 
 if __name__ == '__main__':
-    Main.main()
+    main()
