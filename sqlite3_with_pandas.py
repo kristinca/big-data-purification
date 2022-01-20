@@ -1,6 +1,7 @@
 import sqlite3
 import pandas as pd
 from multiprocessing import Process
+from threading import Thread
 import time
 
 
@@ -129,10 +130,10 @@ class CleanCompanyNames:
 
         print(f'Replacing multiple empty spaces with a single space finished in {round(finish - start, 2)} seconds.')
 
-    def no_multiprocessing(self):
+    def run_program(self):
         """
         Purification of big data in sqlite3 database
-        without using the multiprocessing library.
+        without using the multiprocessing nor threading library.
         """
 
         start = time.perf_counter()
@@ -150,8 +151,7 @@ class CleanCompanyNames:
     def with_multiprocessing(self):
         """
         Purification of big data in sqlite3 database
-        using the multiprocessing library
-        (with multiprocessing.Process).
+        using the multiprocessing library.
         """
 
         start = time.perf_counter()
@@ -181,6 +181,53 @@ class CleanCompanyNames:
         print(f'\nPurification of big data with the multiprocessing library '
               f'finished in {round(finish - start, 2)} seconds.\n')
 
+    def with_threading(self):
+        """
+        Purification of big data in sqlite3 database
+        using the threading library.
+        """
+
+        start = time.perf_counter()
+
+        t1 = Thread(target=self.write_data_to_csv)
+        t2 = Thread(target=self.remove_parentheses_limited_ltd_etc)
+        t3 = Thread(target=self.remove_brackets_and_text_in_between)
+        t4 = Thread(target=self.normalize_company_names)
+        t5 = Thread(target=self.write_data_to_sqlite3_db)
+
+        t1.start()
+        t1.join()
+
+        t2.start()
+        t2.join()
+
+        t3.start()
+        t3.join()
+
+        t4.start()
+        t4.join()
+
+        t5.start()
+        t5.join()
+
+        finish = time.perf_counter()
+        print(f'\nPurification of big data with the threading library '
+              f'finished in {round(finish - start, 2)} seconds.\n')
+
+    def print_rows(self):
+        """
+        Read sqlite3 to a dataframe.
+        Print rows from the dataframe.
+        """
+
+        self.connect_to_db()
+
+        df1 = pd.read_sql('''SELECT * FROM companies''', self.con, chunksize=1000)
+
+        for chunk in df1:
+            for row in chunk.values:
+                print(str(row).replace('[', '').replace(']', ''))
+
 
 def main():
     """
@@ -188,5 +235,7 @@ def main():
     """
 
     # ccn = CleanCompanyNames()
-    # ccn.no_multiprocessing()
+    # ccn.run_program()
     # ccn.with_multiprocessing()
+    # ccn.with_threading()
+    # ccn.print_rows()
