@@ -61,7 +61,7 @@ has one table - companies, 3 columns
      ccn = CleanCompanyNames()
      ccn.with_threading()
     ```
-2. Print rows from the sqlite3 database in `sqlite3_with_pandas.py`
+2. Print rows from the sqlite3 database - in `sqlite3_with_pandas.py`
      uncomment only the following lines    
     ```
      ccn = CleanCompanyNames()
