@@ -28,10 +28,12 @@ Author
 For this script you need the following libraries and modules:
 
 1. sqlite3 ([documentation](https://docs.python.org/3/library/sqlite3.html))
-2. pandas ([documentation](https://pandas.pydata.org/docs/user_guide/index.html) \, [installation](https://pandas.pydata.org/docs/getting_started/install.html))
-3. multiprocessing ([documentation](https://docs.python.org/3/library/multiprocessing.html) \,  [pip_install](https://pypi.org/project/multiprocessing/))
-4. threading ([documentation](https://docs.python.org/3/library/threading.html))
-5. time ([documentation](https://docs.python.org/3/library/time.html))
+2. threading ([documentation](https://docs.python.org/3/library/threading.html))
+3. time ([documentation](https://docs.python.org/3/library/time.html))
+4. pandas ([documentation](https://pandas.pydata.org/docs/user_guide/index.html) \, [installation](https://pandas.pydata.org/docs/getting_started/install.html))
+5. multiprocessing ([documentation](https://docs.python.org/3/library/multiprocessing.html) \,  [pip_install](https://pypi.org/project/multiprocessing/))
+
+
 
 ## Database
 The sqlite3 database semos_company_names.db

@@ -1,8 +1,8 @@
 import sqlite3
-import pandas as pd
-from multiprocessing import Process
 from threading import Thread
 import time
+import pandas as pd
+from multiprocessing import Process
 
 
 class CleanCompanyNames:
@@ -18,7 +18,7 @@ class CleanCompanyNames:
 
     def purify_data(self):
         """
-        Replace any substring in the column name.
+        Replace substrings in the column 'name'.
 
         This function removes parentheses, hashes, question marks,
         brackets and text between brackets,
