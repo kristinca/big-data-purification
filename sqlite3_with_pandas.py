@@ -51,9 +51,17 @@ class CleanCompanyNames:
             .replace({'\s+': ' '}, regex=True)
 
         df['company_name_cleaned'] = df['company_name_cleaned'].str.title()
-        df.to_sql('companies', self.con, chunksize=1000, if_exists='replace', index=False)
+        # df.to_sql('companies', self.con, chunksize=1000, if_exists='replace', index=False)
 
-        self.con.close()
+        return df
+
+    def update_sql(self, df1, b, a=0):
+
+        for row in df1.values[a:b]:
+            command = '''UPDATE companies SET company_name_cleaned = ? WHERE name = ?'''
+            cursor = self.con.cursor()
+            cursor.execute(command, [row[2], row[1]])
+            self.con.commit()
 
     def run_program(self):
         """
@@ -61,9 +69,20 @@ class CleanCompanyNames:
         without using the multiprocessing nor threading library.
         """
 
+        ddf = self.purify_data()
+
         start = time.perf_counter()
 
-        self.purify_data()
+        # n = [i for i in range(0, 25000, 5000)]
+        n = [i for i in range(0, 21000, 1000)]
+
+        # n = [i for i in range(0, 20500, 500)]
+        for ind in range(0, len(n)-1):
+            if ind == 0:
+                self.update_sql(ddf, n[1])
+            else:
+                self.update_sql(ddf, n[ind]+1, n[ind+1])
+        self.con.close()
 
         finish = time.perf_counter()
         print(f'\nPurification of big data finished in {round(finish - start, 2)} seconds.\n')
@@ -74,12 +93,28 @@ class CleanCompanyNames:
         using the multiprocessing library.
         """
 
+        ddf = self.purify_data()
+
         start = time.perf_counter()
 
-        p1 = Process(target=self.purify_data())
+        n = [i for i in range(0, 21000, 1000)]
 
-        p1.start()
-        p1.join()
+        p = dict()
+        for ind in range(0, len(n)-1):
+            if ind == 0:
+                p[ind+1] = Process(target=self.update_sql(ddf, n[1]))
+            else:
+                p[ind+1] = Process(target=self.update_sql(ddf, n[ind]+1, n[ind+1]))
+
+        for k in p.keys():
+            p[k].start()
+            print(f'{k}-th process started\n')
+
+        for k in p.keys():
+            p[k].join()
+            print(f'{k}-th process ended\n')
+
+        self.con.close()
 
         finish = time.perf_counter()
         print(f'\nPurification of big data with the multiprocessing library '
@@ -91,12 +126,26 @@ class CleanCompanyNames:
         using the threading library.
         """
 
+        ddf = self.purify_data()
+
         start = time.perf_counter()
 
-        t1 = Thread(target=self.purify_data())
+        n = [i for i in range(0, 21000, 1000)]
 
-        t1.start()
-        t1.join()
+        t = dict()
+        for ind in range(0, len(n)-1):
+            if ind == 0:
+                t[ind+1] = Thread(target=self.update_sql(ddf, n[1]))
+            else:
+                t[ind+1] = Thread(target=self.update_sql(ddf, n[ind]+1, n[ind+1]))
+
+        for k in t.keys():
+            t[k].start()
+            print(f'{k}-th thread started\n')
+
+        for k in t.keys():
+            t[k].join()
+            print(f'{k}-th thread ended\n')
 
         finish = time.perf_counter()
         print(f'\nPurification of big data with the threading library '
