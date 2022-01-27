@@ -44,7 +44,7 @@ has one table - companies, 3 columns
 ## How to use this code 
 1. To purify the big data \
    \
-     1.1. without the multiprocessing library - in `sqlite3_with_pandas.py` 
+     1.1. without the multiprocessing package nor the threading library- in `sqlite3_with_pandas.py` 
      uncomment only the following lines 
    1. with dataframe to sql
        ```
@@ -93,7 +93,7 @@ has one table - companies, 3 columns
        ccn = CleanCompanyNames()
        ccn.with_threading_sql()
        ```
-2. Print rows from the sqlite3 database - in `sqlite3_with_pandas.py`
+3. Print rows from the sqlite3 database - in `sqlite3_with_pandas.py`
      uncomment only the following lines    
     ```
      ccn = CleanCompanyNames()
