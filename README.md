@@ -9,7 +9,7 @@ semos_company_names.db.
 ## Description
 * The class CleanCompanyNames from the script
 `sqlite3_with_pandas.py` presents the big data purification
-in three ways - with the multiprocessing library,
+in three ways - with the multiprocessing package,
 with the threading library, and without these two libraries.
 The database update is done in two ways - with dataframe to sql
 and with SQL update queries.
